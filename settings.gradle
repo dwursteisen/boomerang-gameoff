@@ -1,1 +1,7 @@
-include "core", "desktop", "android"
+import com.github.dwursteisen.libgdx.IsAndroidSdk
+
+include "core"
+include "desktop"
+if(IsAndroidSdk.isDetected()) {
+    include "android"
+}

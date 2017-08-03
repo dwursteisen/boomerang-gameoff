@@ -1,6 +1,13 @@
+import com.github.dwursteisen.libgdx.IsAndroidSdk
+
 buildscript {
-    repositories { mavenCentral() }
-    dependencies { classpath 'com.android.tools.build:gradle:0.7.+' }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+    }
 }
 
 allprojects {
@@ -8,7 +15,7 @@ allprojects {
 
     version = "1.0"
     ext.appName = "mygame"
-    ext.gdxVersion = "0.9.9" // Use "1.0-SNAPSHOT" for nightly build
+    ext.gdxVersion = "1.9.6"
 
     repositories {
         mavenCentral()
@@ -39,16 +46,17 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
+if (IsAndroidSdk.detected) {
+    project(":android") {
+        apply plugin: "android"
 
-project(":android") {
-    apply plugin: "android"
+        configurations { natives }
 
-    configurations { natives }
-
-    dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        dependencies {
+            compile project(":core")
+            compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+            natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+            natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        }
     }
 }
