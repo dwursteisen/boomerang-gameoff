@@ -1,12 +1,16 @@
 import com.github.dwursteisen.libgdx.IsAndroidSdk
 
 buildscript {
+
+    ext.kotlinVersion = '1.1.50'
+
     repositories {
         mavenCentral()
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -33,12 +37,14 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
 
 project(":desktop") {
     apply plugin: "java"
     apply plugin: "application"
+    apply plugin: "kotlin"
 
     dependencies {
         compile project(":core")
@@ -49,6 +55,7 @@ project(":desktop") {
 if (IsAndroidSdk.detected) {
     project(":android") {
         apply plugin: "android"
+        apply plugin: "kotlin-android"
 
         configurations { natives }
 
@@ -57,6 +64,7 @@ if (IsAndroidSdk.detected) {
             compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
             natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
             natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         }
     }
 }
